@@ -274,17 +274,21 @@ display_cols = [
     "Population_Density", "Households", "Area_sqkm"
 ]
 st.dataframe(
-    filtered[display_cols].sort_values("Total_Population", ascending=False)
-    .style.format({
-        "Total_Population": "{:,.0f}", "Urban_Pct": "{:.1f}%", "Rural_Pct": "{:.1f}%",
-        "Literacy_Rate": "{:.2f}%", "Male_Literacy": "{:.2f}%", "Female_Literacy": "{:.2f}%",
-        "Gender_Literacy_Gap": "{:.2f}",
-        "Worker_Participation_Rate": "{:.2f}%",
-        "Total_Workers": "{:,.0f}", "Main_Workers": "{:,.0f}", "Marginal_Workers": "{:,.0f}",
-        "Population_Density": "{:.1f}", "Households": "{:,.0f}", "Area_sqkm": "{:,.0f}"
-    }).background_gradient(subset=["Literacy_Rate"], cmap="YlGn")
-     .background_gradient(subset=["Total_Population"], cmap="Blues"),
-    use_container_width=True, height=420
+    filtered[display_cols].sort_values("Total_Population", ascending=False),
+    use_container_width=True,
+    height=420,
+    column_config={
+        "Total_Population": st.column_config.NumberColumn("Total Population", format="%d"),
+        "Literacy_Rate": st.column_config.ProgressColumn("Literacy Rate", format="%.1f%%", min_value=0, max_value=100),
+        "Male_Literacy": st.column_config.NumberColumn("Male Literacy", format="%.1f%%"),
+        "Female_Literacy": st.column_config.NumberColumn("Female Literacy", format="%.1f%%"),
+        "Urban_Pct": st.column_config.NumberColumn("Urban %", format="%.1f%%"),
+        "Rural_Pct": st.column_config.NumberColumn("Rural %", format="%.1f%%"),
+        "Worker_Participation_Rate": st.column_config.ProgressColumn("WPR", format="%.1f%%", min_value=0, max_value=60),
+        "Sex_Ratio": st.column_config.NumberColumn("Sex Ratio", format="%d"),
+        "Population_Density": st.column_config.NumberColumn("Density", format="%.1f"),
+        "Households": st.column_config.NumberColumn("Households", format="%d"),
+    }
 )
 
 # ── Downloads ─────────────────────────────────────────────────────────────────
